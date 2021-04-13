@@ -1,0 +1,14 @@
+server:
+  port: 8080  #服务端口号
+spring:
+  profiles:
+    active: '@package.environment@'
+  application:
+    name: mitou
+
+
+#swagger相关配置
+mitou:
+  swagger:
+    scan-base-package: com.tp.task
+    server-title: 任务服务
