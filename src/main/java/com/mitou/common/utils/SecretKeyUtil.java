@@ -1,4 +1,4 @@
-package com.mitou.user.utils;
+package com.mitou.common.utils;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -21,14 +21,14 @@ import java.security.spec.X509EncodedKeySpec;
 /**
  * RSA加解密工具类
  *
- * @author rice
+ * @author yyh
  * @since 2021-03-25
  */
 public class SecretKeyUtil {
     private static final Logger log = LoggerFactory.getLogger(SecretKeyUtil.class);
 
-    private static final String PUBLIC_KEY = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAOnFgy1F2a3bP4a8TYTTr+lncFhWjQ+cW/0n88KCatN/+AyjujI30CB+0bNOc5cUdXemP5jvsrQ2iZMCsryPteUCAwEAAQ==";
-    private static final String PRIVATE_KEY = "MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEA6cWDLUXZrds/hrxNhNOv6WdwWFaND5xb/SfzwoJq03/4DKO6MjfQIH7Rs05zlxR1d6Y/mO+ytDaJkwKyvI+15QIDAQABAkAini4bwTFIDqSspivwlIyDSt8XJdID0srIhWcSkc+R/CPfSJgIuEp6MIO65c9BFKG6gCK3bIqNP8SdmGNO4EmBAiEA+Q+om+FZZraqiw20iBe7JJDIbqAu+DMHq7c0TtPj62ECIQDwSM5LJoX16srO7pNLhE+dKFcz7YJKxbSAfyqBXcY9BQIgMeAU38Js6MjDtjz0XhyCeXwU5zJktYdijdyOOQrtpYECICwtJohYh86DoU/UOw5qP/zj2sx4QTkgCiSJvLXWGMlFAiEA3X++YyJDeSukj8HbWvnWR/ihqSJMqaY8F9pp62etbJc=";
+    private static final String PUBLIC_KEY = "MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIbmwhPYkMcmM+Vst8VTqjBPUYHTDEQQvPPJ+rI28OsCseojMZy/bzRMz7UHfD8CS0WQ0lvRvxUKt1h2II/6MaMCAwEAAQ==";
+    private static final String PRIVATE_KEY = "MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAhubCE9iQxyYz5Wy3xVOqME9RgdMMRBC888n6sjbw6wKx6iMxnL9vNEzPtQd8PwJLRZDSW9G/FQq3WHYgj/oxowIDAQABAkA4nT919L1N1sqQzj+RoLsb6y3Zvii3qA6kgW+ku0oAVlRXi6gsjaynXMG8SyATFALDeuI/kRUqYUrBCBuZE3kBAiEAzqkafDp1QvA48lLt/LK4Ye66VOi4zblRCMiExbm501kCIQCnG82WoRTFwm0iZkx2xzl5ub7CAZYkx3xtKcEiiF95WwIgELQISPwsmCF0aNmdFKyZTIkQFGbO8QnGa/BREu4k/9kCIDwNwdRgDxcCyDWUjeYhsoYMOoF+EHcnOZABcWb3m1gBAiEAwiWAnzyB9jOBImw4KOBYv/ye/NEW7aBtx0iWt8+y/9s=";
     private static final String SIGN_NAME = "RSA";
 
     /**
@@ -77,21 +77,22 @@ public class SecretKeyUtil {
         }
     }
 
+
     /**
-     * 私钥加密过程
+     * 公钥加密过程
      *
-     * @param privateKey    私钥
+     * @param publicKey     公钥
      * @param plainTextData 明文数据
      * @return 密文
      * @throws Exception 加密过程中的异常信息
      */
-    private static String encrypt(RSAPrivateKey privateKey, byte[] plainTextData) throws Exception {
-        if (privateKey == null) {
-            throw new Exception("加密私钥为空,请设置");
+    private static String encrypt(RSAPublicKey publicKey, byte[] plainTextData) throws Exception {
+        if (publicKey == null) {
+            throw new Exception("加密公钥为空,请设置");
         }
         try {
             Cipher cipher = Cipher.getInstance(SIGN_NAME);
-            cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] output = cipher.doFinal(plainTextData);
             return Base64.encodeBase64String(output);
         } catch (NoSuchAlgorithmException e) {
@@ -101,32 +102,32 @@ public class SecretKeyUtil {
             log.error("NoSuchPaddingException", e);
             return null;
         } catch (InvalidKeyException e) {
-            log.error("加密私钥非法,请检查", e);
-            throw new Exception("加密私钥非法,请检查");
+            log.error("加密公钥非法,请检查", e);
+            throw new Exception("加密公钥非法,请检查");
         } catch (IllegalBlockSizeException e) {
             log.error("明文长度非法", e);
             throw new Exception("明文长度非法");
         } catch (BadPaddingException e) {
-            log.error("明文长度非法", e);
+            log.error("明文数据已损坏", e);
             throw new Exception("明文数据已损坏");
         }
     }
 
     /**
-     * 公钥解密过程
+     * 私钥解密过程
      *
-     * @param publicKey  公钥
+     * @param privateKey 私钥
      * @param cipherData 密文数据
      * @return 明文
      * @throws Exception 解密过程中的异常信息
      */
-    private static String decrypt(RSAPublicKey publicKey, byte[] cipherData) throws Exception {
-        if (publicKey == null) {
-            throw new Exception("解密公钥为空,请设置");
+    private static String decrypt(RSAPrivateKey privateKey, byte[] cipherData) throws Exception {
+        if (privateKey == null) {
+            throw new Exception("解密私钥为空, 请设置");
         }
         try {
             Cipher cipher = Cipher.getInstance(SIGN_NAME);
-            cipher.init(Cipher.DECRYPT_MODE, publicKey);
+            cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] output = cipher.doFinal(cipherData);
             return new String(output);
         } catch (NoSuchAlgorithmException e) {
@@ -136,8 +137,8 @@ public class SecretKeyUtil {
             log.error("NoSuchPaddingException", e);
             return null;
         } catch (InvalidKeyException e) {
-            log.error("解密公钥非法,请检查", e);
-            throw new Exception("解密公钥非法,请检查");
+            log.error("解密私钥非法,请检查", e);
+            throw new Exception("解密私钥非法,请检查");
         } catch (IllegalBlockSizeException e) {
             log.error("密文长度非法", e);
             throw new Exception("密文长度非法");
@@ -147,39 +148,40 @@ public class SecretKeyUtil {
         }
     }
 
+
     /**
-     * 私钥加密
+     * 公钥加密
      *
      * @param content 明文
      * @return 密文
      */
-    public static String priEncrypt(String content) {
+    public static String pubEncrypt(String content) {
         try {
-            //加载私钥
-            RSAPrivateKey rsaPriKey = loadPrivateKeyByStr();
-            //私钥加密
-            return encrypt(rsaPriKey, content.getBytes());
+            //加载公钥
+            RSAPublicKey rsaPubKey = loadPublicKeyByStr();
+            //公钥加密
+            return encrypt(rsaPubKey, content.getBytes());
         } catch (Exception e) {
-            log.error("私钥加密出错,请稍后重试!", e);
-            throw new RuntimeException("私钥加密出错,请稍后重试!");
+            log.error("公钥加密出错,请稍后重试!", e);
+            throw new RuntimeException("公钥加密出错,请稍后重试!");
         }
     }
 
     /**
-     * 公钥解密
+     * 私钥解密
      *
      * @param content 加密后的密文
      * @return 明文
      */
-    public static String pubDecrypt(String content) {
+    public static String priDecrypt(String content) {
         try {
-            //加载公钥
-            RSAPublicKey rsaPubKey = loadPublicKeyByStr();
+            //加载私钥
+            RSAPrivateKey rsaPriKey = loadPrivateKeyByStr();
             //解密
-            return decrypt(rsaPubKey, Base64.decodeBase64(content));
+            return decrypt(rsaPriKey, Base64.decodeBase64(content));
         } catch (Exception e) {
-            log.error("公钥解密出错,请稍后重试!", e);
-            throw new RuntimeException("公钥解密出错,请稍后重试!");
+            log.error("私钥解密出错,请稍后重试!", e);
+            throw new RuntimeException("私钥解密出错,请稍后重试!");
         }
     }
 

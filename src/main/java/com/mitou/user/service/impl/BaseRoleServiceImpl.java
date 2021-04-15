@@ -3,9 +3,9 @@ package com.mitou.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mitou.user.response.Result;
-import com.mitou.user.utils.BaseUserUtil;
-import com.mitou.user.constants.BaseConstants;
+import com.mitou.common.response.Result;
+import com.mitou.common.utils.BaseUserUtil;
+import com.mitou.common.constants.BaseConstants;
 import com.mitou.user.entity.BaseRole;
 import com.mitou.user.entity.BaseRoleMenu;
 import com.mitou.user.entity.BaseUserRole;
@@ -46,7 +46,7 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
 
     @Override
     public Result<BaseRole> selectByPrimaryKey(Long roleId) {
-        return Result.build(super.getById(roleId));
+        return Result.success(super.getById(roleId));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
         //分页对象
         Page<BaseRole> page = new Page<>(pageNo, pageSize);
         super.page(page, lqw);
-        return Result.build(page);
+        return Result.success(page);
     }
 
     @Override
@@ -79,17 +79,17 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
         if (null == roleList) {
             roleList = new ArrayList<>();
         }
-        return Result.build(roleList);
+        return Result.success(roleList);
     }
 
     @Override
     public Result insert(BaseRole baseRole) {
-        return Result.build(super.save(baseRole));
+        return Result.success(super.save(baseRole));
     }
 
     @Override
     public Result updateByPrimaryKeySelective(BaseRole baseRole) {
-        return Result.build(super.updateById(baseRole));
+        return Result.success(super.updateById(baseRole));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -99,7 +99,7 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
         baseRoleMenuService.remove(new LambdaQueryWrapper<BaseRoleMenu>().eq(BaseRoleMenu::getRoleId, roleId));
         //清除掉与此角色的用户关联
         baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().eq(BaseUserRole::getRoleId, roleId));
-        return Result.build(super.removeById(roleId));
+        return Result.success(super.removeById(roleId));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -116,7 +116,7 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
         }
         //清除掉之前的角色
         baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().eq(BaseUserRole::getUserId, userId));
-        return Result.build(baseUserRoleService.saveBatch(relList));
+        return Result.success(baseUserRoleService.saveBatch(relList));
     }
 
     @Override
@@ -128,6 +128,6 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
         if (!CollectionUtils.isEmpty(list)) {
             baseRole = list.get(0);
         }
-        return Result.build(baseRole);
+        return Result.success(baseRole);
     }
 }

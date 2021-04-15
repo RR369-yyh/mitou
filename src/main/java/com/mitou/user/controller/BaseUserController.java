@@ -1,7 +1,7 @@
 package com.mitou.user.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.mitou.user.response.Result;
+import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseUser;
 import com.mitou.user.entity.dto.BaseUserDto;
 import com.mitou.user.entity.dto.BaseUserLoginDto;
@@ -37,13 +37,6 @@ public class BaseUserController {
     @ApiOperation(value = "登录", httpMethod = "POST", response = String.class, notes = "返回token")
     public Result<BaseUserLoginVo> login(@RequestBody BaseUserLoginDto baseUserLoginDto) {
         return baseUserService.login(baseUserLoginDto);
-    }
-
-    @PostMapping("/login/{mainToken}")
-    @ApiImplicitParam(paramType = "path", name = "mainToken", value = "令牌", required = true)
-    @ApiOperation(value = "登录", httpMethod = "POST", response = String.class, notes = "令牌登录")
-    public Result<BaseUserLoginVo> loginByMainToken(@PathVariable String mainToken) {
-        return baseUserService.loginByMainToken(mainToken);
     }
 
     @PostMapping("/logout")

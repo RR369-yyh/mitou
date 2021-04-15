@@ -3,7 +3,7 @@ package com.mitou.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mitou.user.response.Result;
+import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseUserRole;
 import com.mitou.user.entity.query.BaseUserRoleQuery;
 import com.mitou.user.mapper.BaseUserRoleMapper;
@@ -28,7 +28,7 @@ public class BaseUserRoleServiceImpl extends ServiceImpl<BaseUserRoleMapper, Bas
 
     @Override
     public Result<BaseUserRole> selectByPrimaryKey(Long userRoleId) {
-        return Result.build(super.getById(userRoleId));
+        return Result.success(super.getById(userRoleId));
     }
 
     @Override
@@ -39,21 +39,21 @@ public class BaseUserRoleServiceImpl extends ServiceImpl<BaseUserRoleMapper, Bas
         //分页对象
         Page<BaseUserRole> page = new Page<>(pageNo, pageSize);
         super.page(page, lqw);
-        return Result.build(page);
+        return Result.success(page);
     }
 
     @Override
     public Result insert(BaseUserRole baseUserRole) {
-        return Result.build(super.save(baseUserRole));
+        return Result.success(super.save(baseUserRole));
     }
 
     @Override
     public Result updateByPrimaryKeySelective(BaseUserRole baseUserRole) {
-        return Result.build(super.updateById(baseUserRole));
+        return Result.success(super.updateById(baseUserRole));
     }
 
     @Override
     public Result deleteByPrimaryKey(Long userRoleId) {
-        return Result.build(super.removeById(userRoleId));
+        return Result.success(super.removeById(userRoleId));
     }
 }

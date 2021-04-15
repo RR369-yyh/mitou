@@ -1,14 +1,21 @@
 server:
-  port: 8080  #服务端口号
+  port: 8080
 spring:
   profiles:
     active: '@package.environment@'
   application:
     name: mitou
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    name: defaultDataSource
+    url: jdbc:mysql://localhost:3306/mitou?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: root
+    password: 123456
+  # 鏍煎紡鍖栬繑鍥炵殑鏃堕棿绫诲瀷鏁版嵁
+  jackson:
+    locale: zh
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 
 
-#swagger相关配置
-mitou:
-  swagger:
-    scan-base-package: com.tp.task
-    server-title: 任务服务
+

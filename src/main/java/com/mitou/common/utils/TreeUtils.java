@@ -1,4 +1,4 @@
-package com.mitou.user.utils;
+package com.mitou.common.utils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

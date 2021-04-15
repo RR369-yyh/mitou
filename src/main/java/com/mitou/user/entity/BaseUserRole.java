@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -19,6 +20,7 @@ import java.io.Serializable;
  * @author rice
  * @since 2021-03-25
  */
+@Data
 @TableName("base_user_role")
 public class BaseUserRole implements Serializable {
 
@@ -48,27 +50,4 @@ public class BaseUserRole implements Serializable {
     @ApiModelProperty(value = "角色ID", position = 2)
     private Long roleId;
 
-    public Long getUserRoleId() {
-        return userRoleId;
-    }
-
-    public void setUserRoleId(Long userRoleId) {
-        this.userRoleId = userRoleId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
 }

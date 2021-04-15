@@ -1,6 +1,6 @@
-package com.mitou.user.exception;
+package com.mitou.common.exception;
 
-import com.mitou.user.response.Result;
+import com.mitou.common.response.Result;
 import org.apache.catalina.connector.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,14 +43,14 @@ public class GlobalExceptionHandler {
         //404异常
         if(exception instanceof NoHandlerFoundException){
             response.setStatus(Response.SC_NOT_FOUND);
-            return Result.fail.error("资源不存在！！").msg(exception.getMessage());
+//            return Result.fail.error("资源不存在！！").msg(exception.getMessage());
         }
         if(exception instanceof TypeMismatchException || exception instanceof HttpMessageNotReadableException){
             response.setStatus(Response.SC_BAD_REQUEST);
-            return Result.fail.error("参数不正确！！").msg(exception.getMessage());
+//            return Result.fail.error("参数不正确！！").msg(exception.getMessage());
         }
         response.setStatus(Response.SC_INTERNAL_SERVER_ERROR);
-        return Result.fail.error("服务器异常，请联系管理员").msg(exception.getMessage());
+        return Result.failure(exception.getMessage());
     }
 
 }

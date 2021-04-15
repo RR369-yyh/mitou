@@ -1,4 +1,4 @@
-package com.mitou.user.config;
+package com.mitou.common.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.springframework.context.annotation.Bean;

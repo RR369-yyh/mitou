@@ -2,7 +2,7 @@ package com.mitou.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mitou.user.response.Result;
+import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseUser;
 import com.mitou.user.entity.dto.BaseUserDto;
 import com.mitou.user.entity.dto.BaseUserLoginDto;
@@ -31,14 +31,6 @@ public interface IBaseUserService extends IService<BaseUser> {
     Result updateByPrimaryKeySelective(BaseUser baseUser);
 
     Result deleteByPrimaryKey(Long userId);
-
-    /**
-     * 用户登录，根据主系统token
-     *
-     * @param mainToken 主系统token
-     * @return
-     */
-    public Result<BaseUserLoginVo> loginByMainToken(String mainToken) ;
 
     /**
      * 用户登录

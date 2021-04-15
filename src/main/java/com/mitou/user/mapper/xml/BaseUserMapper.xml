@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mitou.user.mapper.BaseUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mitou.user.entity.BaseUser">
+        <id column="USER_ID" property="userId" />
+        <result column="USER_NAME" property="userName" />
+        <result column="USER_PWD" property="userPwd" />
+        <result column="PHONE" property="phone" />
+        <result column="EMAIL" property="email" />
+        <result column="GENDER" property="gender" />
+        <result column="USER_LOGO" property="userLogo" />
+        <result column="BIRTHDAY" property="birthday" />
+        <result column="ORG_ID" property="orgId" />
+        <result column="POSITION" property="position" />
+        <result column="DEPT" property="dept" />
+        <result column="CREATE_USER_ID" property="createUserId" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="DEL_FLAG" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        USER_ID, USER_NAME, USER_PWD, PHONE, EMAIL, GENDER, USER_LOGO, BIRTHDAY, ORG_ID, POSITION, DEPT, CREATE_USER_ID, CREATE_TIME, DEL_FLAG
+    </sql>
+
+</mapper>

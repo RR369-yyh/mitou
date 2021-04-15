@@ -1,6 +1,6 @@
-package com.mitou.user.auth;
+package com.mitou.common.auth;
 
-import com.mitou.user.response.Result;
+import com.mitou.common.response.Result;
 import com.mitou.user.entity.vo.BaseMenuVo;
 import com.mitou.user.service.IBaseMenuService;
 import org.apache.commons.lang3.StringUtils;
@@ -71,8 +71,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             //如果标记了注解，则校验权限
             if (StringUtils.isNotBlank(roleAuth.value())) {
                 //获取该用户的权限信息进行鉴权
-                Result<List<BaseMenuVo>> result = baseMenuService.selectHas(null);
-                List<BaseMenuVo> menuList = result.getData();
+                List<BaseMenuVo> menuList = baseMenuService.selectHas(null);
                 //如果权限清单为空，则直接返回
                 if (CollectionUtils.isEmpty(menuList)) {
                     return false;

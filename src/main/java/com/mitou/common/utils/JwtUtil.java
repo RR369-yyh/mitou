@@ -1,4 +1,4 @@
-package com.mitou.user.utils;
+package com.mitou.common.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

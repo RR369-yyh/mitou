@@ -1,4 +1,4 @@
-package com.mitou.user.exception;
+package com.mitou.common.exception;
 
 
 public class UserNotLoginException extends RuntimeException {

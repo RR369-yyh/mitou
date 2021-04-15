@@ -1,7 +1,7 @@
 package com.mitou.user.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.mitou.user.response.Result;
+import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseRole;
 import com.mitou.user.entity.BaseUser;
 import com.mitou.user.entity.dto.BaseUserRoleDto;

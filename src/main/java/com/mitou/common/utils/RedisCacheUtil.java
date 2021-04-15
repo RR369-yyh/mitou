@@ -1,8 +1,6 @@
-package com.mitou.user.utils;
+package com.mitou.common.utils;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

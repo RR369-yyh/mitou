@@ -2,7 +2,7 @@ package com.mitou.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mitou.user.response.Result;
+import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseMenu;
 import com.mitou.user.entity.dto.BaseRoleMenuDto;
 import com.mitou.user.entity.query.BaseMenuHasQuery;
@@ -22,24 +22,39 @@ import java.util.List;
  */
 public interface IBaseMenuService extends IService<BaseMenu> {
 
-    Result<BaseMenu> selectByPrimaryKey(Long menuId);
 
-    Result<Page<BaseMenu>> select(BaseMenuQuery baseMenuQuery, Integer pageNo, Integer pageSize);
+    /**
+     * 分页查询方法
+     *
+     * @param baseMenuQuery
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    Page<BaseMenu> select(BaseMenuQuery baseMenuQuery, Integer pageNo, Integer pageSize);
 
-    Result<List<BaseMenuTreeVo>> getTree();
+    /**
+     * 查询树列表
+     *
+     * @return
+     */
+    List<BaseMenuTreeVo> getTree();
 
-    Result insert(BaseMenu baseMenu);
-
-    Result updateByPrimaryKeySelective(BaseMenu baseMenu);
-
-    Result deleteByPrimaryKey(Long menuId);
+    /**
+     * 删除数据，并清除掉与此菜单的角色关联
+     *
+     * @param menuId
+     * @return
+     */
+    boolean deleteById(Long menuId);
 
     /**
      * 查询当前用户拥有权限的菜单列表
      *
+     * @param baseMenuHasQuery
      * @return
      */
-    Result<List<BaseMenuVo>> selectHas(BaseMenuHasQuery baseMenuHasQuery);
+    List<BaseMenuVo> selectHas(BaseMenuHasQuery baseMenuHasQuery);
 
     /**
      * 为角色设置菜单，会覆盖之前的菜单
@@ -47,5 +62,5 @@ public interface IBaseMenuService extends IService<BaseMenu> {
      * @param baseRoleMenuDto 关系
      * @return
      */
-    Result rel(BaseRoleMenuDto baseRoleMenuDto);
+    boolean rel(BaseRoleMenuDto baseRoleMenuDto);
 }

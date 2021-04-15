@@ -2,7 +2,7 @@ package com.mitou.user.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mitou.user.response.Result;
+import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseUserRole;
 import com.mitou.user.entity.query.BaseUserRoleQuery;
 

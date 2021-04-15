@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,17 +21,17 @@ import java.util.Date;
  * @author rice
  * @since 2021-03-25
  */
+@Data
 @TableName("base_menu")
 public class BaseMenu implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     /**
      * 菜单ID
      */
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableId(value = "MENU_ID",type = IdType.AUTO)
+    @TableId(value = "MENU_ID", type = IdType.AUTO)
     @ApiModelProperty(value = "菜单ID", position = 0)
     private Long menuId;
 
@@ -106,91 +107,4 @@ public class BaseMenu implements Serializable {
     @ApiModelProperty(value = "删除状态( 0:已删除 1:正常)", position = 10)
     private Integer delFlag;
 
-    public Long getMenuId() {
-        return menuId;
-    }
-
-    public void setMenuId(Long menuId) {
-        this.menuId = menuId;
-    }
-
-    public Long getParentMenuId() {
-        return parentMenuId;
-    }
-
-    public void setParentMenuId(Long parentMenuId) {
-        this.parentMenuId = parentMenuId;
-    }
-
-    public String getMenuName() {
-        return menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public String getMenuCode() {
-        return menuCode;
-    }
-
-    public void setMenuCode(String menuCode) {
-        this.menuCode = menuCode;
-    }
-
-    public String getMenuUrl() {
-        return menuUrl;
-    }
-
-    public void setMenuUrl(String menuUrl) {
-        this.menuUrl = menuUrl;
-    }
-
-    public Integer getMenuType() {
-        return menuType;
-    }
-
-    public void setMenuType(Integer menuType) {
-        this.menuType = menuType;
-    }
-
-    public Integer getOrderNum() {
-        return orderNum;
-    }
-
-    public void setOrderNum(Integer orderNum) {
-        this.orderNum = orderNum;
-    }
-
-    public String getCreateUserName() {
-        return createUserName;
-    }
-
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
-    }
-
-    public Long getCreateUserId() {
-        return createUserId;
-    }
-
-    public void setCreateUserId(Long createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
 }

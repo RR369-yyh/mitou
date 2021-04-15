@@ -1,4 +1,4 @@
-package com.mitou.user.constants;
+package com.mitou.common.constants;
 
 /**
  * <p>

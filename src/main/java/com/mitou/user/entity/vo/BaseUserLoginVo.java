@@ -54,9 +54,9 @@ public class BaseUserLoginVo implements Serializable {
     private String email;
 
     /**
-     * 性别(0:男 1:女)
+     * 性别
      */
-    @ApiModelProperty(value = "性别(0:男 1:女)", position = 5)
+    @ApiModelProperty(value = "性别", position = 5)
     private Integer gender;
 
     /**

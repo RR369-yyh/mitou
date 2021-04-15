@@ -1,4 +1,4 @@
-package com.mitou.user.utils;
+package com.mitou.common.utils;
 
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.request.RequestContextHolder;

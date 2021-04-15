@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,6 +21,7 @@ import java.util.Date;
  * @author rice
  * @since 2021-03-25
  */
+@Data
 @TableName("base_user")
 public class BaseUser implements Serializable {
 
@@ -62,11 +64,11 @@ public class BaseUser implements Serializable {
     private String email;
 
     /**
-     * 性别(0:男 1:女)
+     * 性别
      */
     @TableField("GENDER")
-    @ApiModelProperty(value = "性别(0:男 1:女)", position = 5)
-    private Integer gender;
+    @ApiModelProperty(value = "性别", position = 5)
+    private String gender;
 
     /**
      * 用户头像
@@ -112,13 +114,6 @@ public class BaseUser implements Serializable {
     private String dept;
 
     /**
-     * 主系统登录名
-     */
-    @TableField("MAIN_USER_ID")
-    @ApiModelProperty(value = "主系统登录名", position = 12)
-    private String mainUserId;
-
-    /**
      * 用户类型
      */
     @TableField("USER_TYPE")
@@ -146,142 +141,5 @@ public class BaseUser implements Serializable {
     @TableField("DEL_FLAG")
     @ApiModelProperty(value = "删除状态( 0:已删除 1:正常)", position = 16)
     private Integer delFlag;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserPwd() {
-        return userPwd;
-    }
-
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getGender() {
-        return gender;
-    }
-
-    public void setGender(Integer gender) {
-        this.gender = gender;
-    }
-
-    public String getUserLogo() {
-        return userLogo;
-    }
-
-    public void setUserLogo(String userLogo) {
-        this.userLogo = userLogo;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Long getOrgId() {
-        return orgId;
-    }
-
-    public void setOrgId(Long orgId) {
-        this.orgId = orgId;
-    }
-
-    public String getOrgName() {
-        return orgName;
-    }
-
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getDept() {
-        return dept;
-    }
-
-    public void setDept(String dept) {
-        this.dept = dept;
-    }
-
-    public String getMainUserId() {
-        return mainUserId;
-    }
-
-    public void setMainUserId(String mainUserId) {
-        this.mainUserId = mainUserId;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public Long getCreateUserId() {
-        return createUserId;
-    }
-
-    public void setCreateUserId(Long createUserId) {
-        this.createUserId = createUserId;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
-
 
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mitou.user.mapper.BaseMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mitou.user.entity.BaseMenu">
+        <id column="MENU_ID" property="menuId" />
+        <result column="PARENT_MENU_ID" property="parentMenuId" />
+        <result column="MENU_NAME" property="menuName" />
+        <result column="MENU_CODE" property="menuCode" />
+        <result column="MENU_URL" property="menuUrl" />
+        <result column="MENU_TYPE" property="menuType" />
+        <result column="ORDER_NUM" property="orderNum" />
+        <result column="CREATE_USER_NAME" property="createUserName" />
+        <result column="CREATE_USER_ID" property="createUserId" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="DEL_FLAG" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        MENU_ID, PARENT_MENU_ID, MENU_NAME, MENU_CODE, MENU_URL, MENU_TYPE, ORDER_NUM, CREATE_USER_NAME, CREATE_USER_ID, CREATE_TIME, DEL_FLAG
+    </sql>
+
+</mapper>

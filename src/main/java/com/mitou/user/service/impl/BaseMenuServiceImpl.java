@@ -5,10 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mitou.user.response.Result;
-import com.mitou.user.utils.BaseUserUtil;
-import com.mitou.user.utils.TreeUtils;
-import com.mitou.user.constants.BaseConstants;
+import com.mitou.common.constants.BaseConstants;
+import com.mitou.common.response.Result;
+import com.mitou.common.utils.BaseUserUtil;
+import com.mitou.common.utils.TreeUtils;
 import com.mitou.user.entity.BaseMenu;
 import com.mitou.user.entity.BaseRoleMenu;
 import com.mitou.user.entity.dto.BaseRoleMenuDto;
@@ -46,12 +46,7 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenu> i
     private IBaseRoleMenuService baseRoleMenuService;
 
     @Override
-    public Result<BaseMenu> selectByPrimaryKey(Long menuId) {
-        return Result.build(super.getById(menuId));
-    }
-
-    @Override
-    public Result<Page<BaseMenu>> select(BaseMenuQuery baseMenuQuery, Integer pageNo, Integer pageSize) {
+    public Page<BaseMenu> select(BaseMenuQuery baseMenuQuery, Integer pageNo, Integer pageSize) {
         LambdaQueryWrapper<BaseMenu> lqw = new LambdaQueryWrapper<>();
         //进行条件组装
         //默认查询未删除的菜单
@@ -67,12 +62,11 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenu> i
         }
         //分页对象
         Page<BaseMenu> page = new Page<>(pageNo, pageSize);
-        super.page(page, lqw);
-        return Result.build(page);
+        return super.page(page, lqw);
     }
 
     @Override
-    public Result<List<BaseMenuTreeVo>> getTree() {
+    public List<BaseMenuTreeVo> getTree() {
         List<BaseMenuTreeVo> tree = new ArrayList<>();
         try {
             List<BaseMenu> list = super.list(
@@ -83,29 +77,19 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenu> i
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Result.build(tree);
-    }
-
-    @Override
-    public Result insert(BaseMenu baseMenu) {
-        return Result.build(super.save(baseMenu));
-    }
-
-    @Override
-    public Result updateByPrimaryKeySelective(BaseMenu baseMenu) {
-        return Result.build(super.updateById(baseMenu));
+        return tree;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Result deleteByPrimaryKey(Long menuId) {
+    public boolean deleteById(Long menuId) {
         //清除掉与此菜单的角色关联
         baseRoleMenuService.remove(new LambdaQueryWrapper<BaseRoleMenu>().eq(BaseRoleMenu::getMenuId, menuId));
-        return Result.build(super.removeById(menuId));
+        return super.removeById(menuId);
     }
 
     @Override
-    public Result<List<BaseMenuVo>> selectHas(BaseMenuHasQuery baseMenuHasQuery) {
+    public List<BaseMenuVo> selectHas(BaseMenuHasQuery baseMenuHasQuery) {
         Long parentId = BaseConstants.DEFAULT_PARENT_ID;
         Integer menuId = BaseConstants.BASE_MENU_1;
         //默认查询顶级的、菜单类型的清单
@@ -121,12 +105,12 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenu> i
         if (null == baseMenuVoList) {
             baseMenuVoList = new ArrayList<>();
         }
-        return Result.build(baseMenuVoList);
+        return baseMenuVoList;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Result rel(BaseRoleMenuDto baseRoleMenuDto) {
+    public boolean rel(BaseRoleMenuDto baseRoleMenuDto) {
         Long roleId = baseRoleMenuDto.getRoleId();
         List<Long> menuIdList = baseRoleMenuDto.getMenuIdList();
         List<BaseRoleMenu> relList = new ArrayList<>();
@@ -138,6 +122,6 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenu> i
         }
         //清除掉之前的菜单
         baseRoleMenuService.remove(new LambdaQueryWrapper<BaseRoleMenu>().eq(BaseRoleMenu::getRoleId, roleId));
-        return Result.build(baseRoleMenuService.saveBatch(relList));
+        return baseRoleMenuService.saveBatch(relList);
     }
 }

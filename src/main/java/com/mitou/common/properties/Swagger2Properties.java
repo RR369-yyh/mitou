@@ -1,4 +1,4 @@
-package com.mitou.user.properties;
+package com.mitou.common.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -12,7 +12,7 @@ public class Swagger2Properties {
 
     private String scanBasePackage = "com.mitou";
 
-    private String serverTitle = "服务title";
+    private String serverTitle = "mitou快速搭建平台";
 
     public String getScanBasePackage() {
         return scanBasePackage;

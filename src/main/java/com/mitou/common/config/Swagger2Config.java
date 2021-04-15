@@ -1,8 +1,7 @@
-package com.mitou.user.config;
+package com.mitou.common.config;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.mitou.user.properties.Swagger2Properties;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mitou.common.properties.Swagger2Properties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

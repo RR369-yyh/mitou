@@ -1,4 +1,4 @@
-package com.mitou.user.auth;
+package com.mitou.common.auth;
 
 import java.lang.annotation.*;
 

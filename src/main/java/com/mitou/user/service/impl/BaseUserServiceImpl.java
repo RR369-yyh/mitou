@@ -5,11 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mitou.user.response.Result;
-import com.mitou.user.utils.BaseUserUtil;
-import com.mitou.user.utils.JwtUtil;
-import com.mitou.user.utils.SecretKeyUtil;
-import com.mitou.user.constants.BaseConstants;
+import com.mitou.common.response.Result;
+import com.mitou.common.response.ResultCode;
+import com.mitou.common.utils.BaseUserUtil;
+import com.mitou.common.utils.JwtUtil;
+import com.mitou.common.utils.SecretKeyUtil;
+import com.mitou.common.constants.BaseConstants;
 import com.mitou.user.entity.BaseRole;
 import com.mitou.user.entity.BaseUser;
 import com.mitou.user.entity.BaseUserRole;
@@ -65,7 +66,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUser> i
             List<BaseRole> roleList = listResult.getData();
             baseUserVo.setRoleList(roleList);
         }
-        return Result.build(baseUserVo);
+        return Result.success(baseUserVo);
     }
 
     @Override
@@ -95,7 +96,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUser> i
                 baseUserVo.setRoleList(roleList);
             }
         }
-        return Result.build(page);
+        return Result.success(page);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -118,12 +119,12 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUser> i
                 save = baseUserRoleService.saveBatch(relList);
             }
         }
-        return Result.build(save);
+        return Result.success(save);
     }
 
     @Override
     public Result updateByPrimaryKeySelective(BaseUser baseUser) {
-        return Result.build(super.updateById(baseUser));
+        return Result.success(super.updateById(baseUser));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -131,62 +132,29 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUser> i
     public Result deleteByPrimaryKey(Long userId) {
         //清除掉与此用户的角色关联
         baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().eq(BaseUserRole::getUserId, userId));
-        return Result.build(super.removeById(userId));
-    }
-
-    @Override
-    public Result<BaseUserLoginVo> loginByMainToken(String mainToken) {
-        Map<String, String> map = (Map) JwtUtil.getVal(mainToken, "sub");
-        if (null == map) {
-            return Result.fail.error("登录失败，请检查token信息！");
-        }
-        LambdaQueryWrapper<BaseUser> lqw = new LambdaQueryWrapper<>();
-        String phone = map.get("phone");
-        lqw.eq(BaseUser::getPhone, phone);
-        BaseUser one = super.getOne(lqw);
-        if (null == one) {
-            BaseUser baseUser = new BaseUser();
-            baseUser.setMainUserId(map.get("userId"));
-            baseUser.setUserName(map.get("realName"));
-            baseUser.setPhone(map.get("phone"));
-            baseUser.setOrgName(map.get("orgName"));
-            baseUser.setDept(map.get("dept"));
-            baseUser.setUserType(map.get("userType"));
-            baseUser.setPosition(map.get("position"));
-            baseUser.setGender("男".equals(map.get("gender")) ? 0 : 1);
-            baseUser.setEmail(map.get("dept"));
-            this.register(baseUser, true);
-            one = super.getOne(lqw);
-        }
-        String token = baseUserUtil.generateToken(one);
-        //返回token与用户信息
-        BaseUserLoginVo baseUserLoginVo = new BaseUserLoginVo();
-        BeanUtils.copyProperties(one, baseUserLoginVo);
-        baseUserLoginVo.setToken(token);
-        return Result.build(baseUserLoginVo);
+        return Result.success(super.removeById(userId));
     }
 
     @Override
     public Result<BaseUserLoginVo> login(BaseUserLoginDto baseUserLoginDto) {
         LambdaQueryWrapper<BaseUser> lqw = new LambdaQueryWrapper<>();
         lqw.eq(BaseUser::getPhone, baseUserLoginDto.getPhone());
-        lqw.eq(BaseUser::getUserPwd, SecretKeyUtil.priEncrypt(baseUserLoginDto.getUserPwd()));
         BaseUser one = super.getOne(lqw);
-        if (null == one) {
-            return Result.fail.error("登录失败，请检查用户名或密码！");
+        if (null == one || !SecretKeyUtil.priDecrypt(one.getUserPwd()).equals(baseUserLoginDto.getUserPwd())) {
+            return Result.failure(ResultCode.USER_LOGIN_ERROR);
         }
         String token = baseUserUtil.generateToken(one);
         //返回token与用户信息
         BaseUserLoginVo baseUserLoginVo = new BaseUserLoginVo();
         BeanUtils.copyProperties(one, baseUserLoginVo);
         baseUserLoginVo.setToken(token);
-        return Result.build(baseUserLoginVo);
+        return Result.success(baseUserLoginVo);
     }
 
     @Override
     public Result logout() {
         baseUserUtil.removeToken();
-        return Result.success;
+        return Result.success();
     }
 
     /**
@@ -203,7 +171,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUser> i
             userPwd = BaseConstants.DEFAULT_PWD;
         }
         //密码加密
-        baseUser.setUserPwd(SecretKeyUtil.priEncrypt(userPwd));
+        baseUser.setUserPwd(SecretKeyUtil.pubEncrypt(userPwd));
         boolean save = super.save(baseUser);
         if (save) {
             if (autoGiveDefaultRole) {

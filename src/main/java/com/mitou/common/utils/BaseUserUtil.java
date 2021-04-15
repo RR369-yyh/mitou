@@ -1,7 +1,7 @@
-package com.mitou.user.utils;
+package com.mitou.common.utils;
 
-import com.mitou.user.exception.UserNotLoginException;
-import com.mitou.user.constants.BaseConstants;
+import com.mitou.common.exception.UserNotLoginException;
+import com.mitou.common.constants.BaseConstants;
 import com.mitou.user.entity.BaseUser;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
