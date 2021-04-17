@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : localhost10.1.1.89
 Source Server Version : 80022
 Source Host           : localhost:3306
 Source Database       : mitou
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80022
 File Encoding         : 65001
 
-Date: 2021-04-15 10:28:38
+Date: 2021-04-17 13:14:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,6 +41,7 @@ DROP TABLE IF EXISTS `base_role`;
 CREATE TABLE `base_role` (
   `ROLE_ID` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
   `ROLE_NAME` varchar(100) NOT NULL DEFAULT '' COMMENT '角色名称',
+  `ROLE_CODE` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '角色编码',
   `ROLE_DEFAULT` tinyint NOT NULL DEFAULT '0' COMMENT '是否默认角色( 0:非默认 1:默认)',
   `ORDER_NUM` smallint DEFAULT '0' COMMENT '显示顺序',
   `SYS_INIT` tinyint NOT NULL DEFAULT '0' COMMENT '是否内置角色( 0:非内置 1:内置)',
@@ -70,9 +71,9 @@ CREATE TABLE `base_user` (
   `USER_ID` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `USER_NAME` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '姓名',
   `USER_PWD` varchar(100) DEFAULT '' COMMENT '密码',
-  `PHONE` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '电话',
+  `PHONE` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '电话(作为登录名)',
   `EMAIL` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '邮箱',
-  `GENDER` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '性别',
+  `GENDER` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '性别(0:男 1:女)',
   `USER_LOGO` varchar(100) DEFAULT '' COMMENT '用户头像',
   `BIRTHDAY` datetime DEFAULT NULL COMMENT '生日',
   `ORG_ID` bigint DEFAULT NULL COMMENT '单位(组织id)',
@@ -83,7 +84,8 @@ CREATE TABLE `base_user` (
   `CREATE_USER_ID` bigint DEFAULT NULL COMMENT '创建人ID',
   `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
   `DEL_FLAG` tinyint NOT NULL DEFAULT '1' COMMENT '删除状态( 0:已删除 1:正常)',
-  PRIMARY KEY (`USER_ID`)
+  PRIMARY KEY (`USER_ID`),
+  UNIQUE KEY `PHONE` (`PHONE`) COMMENT '登录名'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
 -- ----------------------------

@@ -2,6 +2,7 @@ package com.mitou.user.entity.query;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author rice
  * @since 2021-03-25
  */
+@Data
 @ApiModel(description = "用户下菜单分页条件Vo")
 public class BaseMenuHasQuery {
 
@@ -22,19 +24,4 @@ public class BaseMenuHasQuery {
     @ApiModelProperty(value = "菜单父ID", position = 1)
     private Long parentMenuId;
 
-    public Integer getMenuType() {
-        return menuType;
-    }
-
-    public void setMenuType(Integer menuType) {
-        this.menuType = menuType;
-    }
-
-    public Long getParentMenuId() {
-        return parentMenuId;
-    }
-
-    public void setParentMenuId(Long parentMenuId) {
-        this.parentMenuId = parentMenuId;
-    }
 }

@@ -1,10 +1,7 @@
 package com.mitou.user.service;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseRoleMenu;
-import com.mitou.user.entity.query.BaseRoleMenuQuery;
 
 /**
  * <p>
@@ -16,13 +13,4 @@ import com.mitou.user.entity.query.BaseRoleMenuQuery;
  */
 public interface IBaseRoleMenuService extends IService<BaseRoleMenu> {
 
-    Result<BaseRoleMenu> selectByPrimaryKey(Long roleMenuId);
-
-    Result<Page<BaseRoleMenu>> select(BaseRoleMenuQuery baseRoleMenuQuery, Integer pageNo, Integer pageSize);
-
-    Result insert(BaseRoleMenu baseRoleMenu);
-
-    Result updateByPrimaryKeySelective(BaseRoleMenu baseRoleMenu);
-
-    Result deleteByPrimaryKey(Long roleMenuId);
 }

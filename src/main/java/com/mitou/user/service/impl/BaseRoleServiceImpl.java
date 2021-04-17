@@ -3,9 +3,8 @@ package com.mitou.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.mitou.common.response.Result;
-import com.mitou.common.utils.BaseUserUtil;
 import com.mitou.common.constants.BaseConstants;
+import com.mitou.common.utils.BaseUserUtil;
 import com.mitou.user.entity.BaseRole;
 import com.mitou.user.entity.BaseRoleMenu;
 import com.mitou.user.entity.BaseUserRole;
@@ -44,13 +43,9 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
     @Resource
     private IBaseRoleMenuService baseRoleMenuService;
 
-    @Override
-    public Result<BaseRole> selectByPrimaryKey(Long roleId) {
-        return Result.success(super.getById(roleId));
-    }
 
     @Override
-    public Result<Page<BaseRole>> select(BaseRoleQuery baseRoleQuery, Integer pageNo, Integer pageSize) {
+    public Page<BaseRole> page(BaseRoleQuery baseRoleQuery, Integer pageNo, Integer pageSize) {
         LambdaQueryWrapper<BaseRole> lqw = new LambdaQueryWrapper<>();
         //进行条件组装
         //默认查询未删除的角色
@@ -66,45 +61,34 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
         }
         //分页对象
         Page<BaseRole> page = new Page<>(pageNo, pageSize);
-        super.page(page, lqw);
-        return Result.success(page);
+        return super.page(page, lqw);
     }
 
     @Override
-    public Result<List<BaseRole>> selectByUserId(Long userId) {
+    public List<BaseRole> getByUserId(Long userId) {
         if (null == userId) {
             userId = baseUserUtil.getUserId();
         }
-        List<BaseRole> roleList = baseRoleMapper.selectByUserId(userId);
+        List<BaseRole> roleList = baseRoleMapper.getByUserId(userId);
         if (null == roleList) {
             roleList = new ArrayList<>();
         }
-        return Result.success(roleList);
-    }
-
-    @Override
-    public Result insert(BaseRole baseRole) {
-        return Result.success(super.save(baseRole));
-    }
-
-    @Override
-    public Result updateByPrimaryKeySelective(BaseRole baseRole) {
-        return Result.success(super.updateById(baseRole));
+        return roleList;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Result deleteByPrimaryKey(Long roleId) {
+    public boolean deleteById(Long roleId) {
         //清除掉与此角色的菜单关联
         baseRoleMenuService.remove(new LambdaQueryWrapper<BaseRoleMenu>().eq(BaseRoleMenu::getRoleId, roleId));
         //清除掉与此角色的用户关联
         baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().eq(BaseUserRole::getRoleId, roleId));
-        return Result.success(super.removeById(roleId));
+        return super.removeById(roleId);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Result rel(BaseUserRoleDto baseUserRoleDto) {
+    public boolean rel(BaseUserRoleDto baseUserRoleDto) {
         Long userId = baseUserRoleDto.getUserId();
         List<Long> roleIdList = baseUserRoleDto.getRoleIdList();
         List<BaseUserRole> relList = new ArrayList<>();
@@ -116,11 +100,11 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
         }
         //清除掉之前的角色
         baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().eq(BaseUserRole::getUserId, userId));
-        return Result.success(baseUserRoleService.saveBatch(relList));
+        return baseUserRoleService.saveBatch(relList);
     }
 
     @Override
-    public Result<BaseRole> getDefaultRole() {
+    public BaseRole getDefaultRole() {
         BaseRole baseRole = null;
         LambdaQueryWrapper<BaseRole> lqw = new LambdaQueryWrapper<>();
         lqw.eq(BaseRole::getRoleDefault, BaseConstants.DEFAULT_ROLE_TRUE);
@@ -128,6 +112,6 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
         if (!CollectionUtils.isEmpty(list)) {
             baseRole = list.get(0);
         }
-        return Result.success(baseRole);
+        return baseRole;
     }
 }

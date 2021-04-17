@@ -46,7 +46,7 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenu> i
     private IBaseRoleMenuService baseRoleMenuService;
 
     @Override
-    public Page<BaseMenu> select(BaseMenuQuery baseMenuQuery, Integer pageNo, Integer pageSize) {
+    public Page<BaseMenu> page(BaseMenuQuery baseMenuQuery, Integer pageNo, Integer pageSize) {
         LambdaQueryWrapper<BaseMenu> lqw = new LambdaQueryWrapper<>();
         //进行条件组装
         //默认查询未删除的菜单

@@ -1,37 +1,24 @@
-package com.mitou.user.entity.vo;
+package com.mitou.user.entity.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.mitou.user.entity.BaseRole;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
 
 /**
  * <p>
- * 用户信息返回
+ * 新增--系统用户 的请求参数
  * </p>
  *
  * @author rice
  * @since 2021-03-25
  */
 @Data
-@ApiModel(description = "用户信息返回Vo")
-public class BaseUserVo implements Serializable {
+@ApiModel(description = "新增用户")
+public class BaseUserSaveDto {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 用户ID
-     */
-    @JsonSerialize(using = ToStringSerializer.class)
-    @ApiModelProperty(value = "用户ID", position = 0)
-    private Long userId;
 
     /**
      * 姓名
@@ -78,7 +65,6 @@ public class BaseUserVo implements Serializable {
     /**
      * 单位(组织id)
      */
-    @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty(value = "单位(组织id)", position = 8)
     private Long orgId;
 
@@ -99,17 +85,5 @@ public class BaseUserVo implements Serializable {
      */
     @ApiModelProperty(value = "部门", position = 10)
     private String dept;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value = "创建时间", position = 11)
-    private Date createTime;
-
-    /**
-     * 角色集
-     */
-    @ApiModelProperty(value = "角色集", position = 12)
-    private List<BaseRole> roleList;
 
 }

@@ -24,6 +24,6 @@ public interface BaseRoleMapper extends BaseMapper<BaseRole> {
      * @return 角色列表
      */
     @Select("SELECT * FROM `base_user_role` rel INNER JOIN `base_role` role ON rel.ROLE_ID = role.ROLE_ID AND rel.USER_ID = #{userId}")
-    public List<BaseRole> selectByUserId(@Param("userId") Long userId);
+    public List<BaseRole> getByUserId(@Param("userId") Long userId);
 
 }

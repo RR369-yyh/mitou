@@ -19,17 +19,31 @@ import java.util.List;
  */
 public interface IBaseRoleService extends IService<BaseRole> {
 
-    Result<BaseRole> selectByPrimaryKey(Long roleId);
+    /**
+     * 分页查询方法
+     *
+     * @param baseRoleQuery
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    Page<BaseRole> page(BaseRoleQuery baseRoleQuery, Integer pageNo, Integer pageSize);
 
-    Result<Page<BaseRole>> select(BaseRoleQuery baseRoleQuery, Integer pageNo, Integer pageSize);
+    /**
+     * 查询此用户下的角色集合
+     *
+     * @param userId
+     * @return
+     */
+    List<BaseRole> getByUserId(Long userId);
 
-    Result<List<BaseRole>> selectByUserId(Long userId);
-
-    Result insert(BaseRole baseRole);
-
-    Result updateByPrimaryKeySelective(BaseRole baseRole);
-
-    Result deleteByPrimaryKey(Long roleId);
+    /**
+     * 删除数据，并清除掉与此角色的菜单关联和此角色的用户关联
+     *
+     * @param roleId
+     * @return
+     */
+    boolean deleteById(Long roleId);
 
     /**
      * 为用户设置角色，会覆盖之前的角色
@@ -37,12 +51,12 @@ public interface IBaseRoleService extends IService<BaseRole> {
      * @param baseUserRoleDto 关系
      * @return
      */
-    Result rel(BaseUserRoleDto baseUserRoleDto);
+    boolean rel(BaseUserRoleDto baseUserRoleDto);
 
     /**
      * 获取默认角色
      *
      * @return
      */
-    Result<BaseRole> getDefaultRole();
+    BaseRole getDefaultRole();
 }

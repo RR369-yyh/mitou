@@ -4,6 +4,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * <p>
+ * swagger相关配置
+ * <p/>
+ *
+ * @author rice
+ * @since 2021-03-24
+ */
 @EnableConfigurationProperties(Swagger2Properties.class)
 @ConfigurationProperties(prefix = "mitou.swagger")
 @Component

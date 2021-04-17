@@ -22,13 +22,14 @@ public enum ResultCode {
 
     /* 用户错误：20001-29999*/
     USER_NOT_LOGGED_IN(20001, "用户未登录"),
-    USER_LOGIN_ERROR(20002, "账号不存在或密码错误"),
-    USER_ACCOUNT_FORBIDDEN(20003, "账号已被禁用"),
-    USER_ACCOUNT_REMOVE(20008, "账号已被移除"),
-    USER_NOT_EXIST(20004, "用户不存在"),
-    USER_HAS_EXISTED(20005, "用户已存在"),
-    EMAIL_HAS_EXISTED(20006, "邮箱已被绑定"),
-    LOGIN_CREDENTIAL_EXISTED(20007, "凭证已存在"),
+    USER_LOGIN_ERROR(20002, "账号不存在"),
+    USER_PWD_ERROR(20003, "密码错误"),
+    USER_ACCOUNT_FORBIDDEN(20004, "账号已被禁用"),
+    USER_ACCOUNT_REMOVE(20005, "账号已被移除"),
+    USER_NOT_EXIST(20006, "用户不存在"),
+    USER_HAS_EXISTED(20007, "用户已存在"),
+    EMAIL_HAS_EXISTED(20008, "邮箱已被绑定"),
+    LOGIN_CREDENTIAL_EXISTED(20009, "凭证已存在"),
 
     /* 业务错误：30001-39999 */
     SPECIFIED_QUESTIONED_USER_NOT_EXIST(30001, "业务错误"),

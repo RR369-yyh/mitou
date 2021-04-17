@@ -68,12 +68,14 @@ public class BaseUserUtil {
      *
      * @return
      */
-    public void removeToken() {
+    public boolean removeToken() {
+        boolean bool = false;
         try {
             String token = RequestContextUtil.getRequest().getHeader(BaseConstants.TOKEN_MAME);
-            redisCacheUtil.deleteStr(token);
+            bool = redisCacheUtil.deleteStr(token);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return bool;
     }
 }

@@ -31,7 +31,7 @@ public interface IBaseMenuService extends IService<BaseMenu> {
      * @param pageSize
      * @return
      */
-    Page<BaseMenu> select(BaseMenuQuery baseMenuQuery, Integer pageNo, Integer pageSize);
+    Page<BaseMenu> page(BaseMenuQuery baseMenuQuery, Integer pageNo, Integer pageSize);
 
     /**
      * 查询树列表

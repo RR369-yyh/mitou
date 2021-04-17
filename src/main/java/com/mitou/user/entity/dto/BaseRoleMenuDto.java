@@ -2,6 +2,7 @@ package com.mitou.user.entity.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author rice
  * @since 2021-03-24
  */
+@Data
 @ApiModel(description = "角色菜单关系")
 public class BaseRoleMenuDto implements Serializable {
 
@@ -27,19 +29,4 @@ public class BaseRoleMenuDto implements Serializable {
     @ApiModelProperty(value = "菜单ID集合", required = true)
     private List<Long> menuIdList;
 
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public List<Long> getMenuIdList() {
-        return menuIdList;
-    }
-
-    public void setMenuIdList(List<Long> menuIdList) {
-        this.menuIdList = menuIdList;
-    }
 }

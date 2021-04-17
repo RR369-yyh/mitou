@@ -32,50 +32,49 @@ public class BaseRoleController {
     @Resource
     private IBaseRoleService baseRoleService;
 
-
     @GetMapping("/{roleId}")
     @ApiOperation(value = "查询", httpMethod = "GET", response = BaseRole.class)
     @ApiImplicitParam(paramType = "path", name = "roleId", value = "角色ID", required = true)
-    public Result<BaseRole> selectByPrimaryKey(@PathVariable Long roleId) {
-        return baseRoleService.selectByPrimaryKey(roleId);
+    public Result<BaseRole> getById(@PathVariable Long roleId) {
+        return Result.success(baseRoleService.getById(roleId));
     }
 
     @GetMapping
     @ApiOperation(value = "分页查询", httpMethod = "GET", response = BaseRole.class)
-    public Result<Page<BaseRole>> select(@ModelAttribute BaseRoleQuery baseRoleQuery,
+    public Result<Page<BaseRole>> page(@ModelAttribute BaseRoleQuery baseRoleQuery,
                                          @ApiParam(name = "pageNo", required = true, value = "当前页") @RequestParam("pageNo") Integer pageNo,
                                          @ApiParam(name = "pageSize", required = true, value = "每页记录数") @RequestParam("pageSize") Integer pageSize) {
-        return baseRoleService.select(baseRoleQuery, pageNo, pageSize);
+        return Result.success(baseRoleService.page(baseRoleQuery, pageNo, pageSize));
     }
 
     @GetMapping("/user")
     @ApiOperation(value = "查询单个用户的角色列表", httpMethod = "GET", response = BaseUser.class)
-    public Result<List<BaseRole>> selectByUserId(@ApiParam(value = "用户ID，不传则查询当前登录人的") @RequestParam(value = "userId", required = false) Long userId) {
-        return baseRoleService.selectByUserId(userId);
+    public Result<List<BaseRole>> getByUserId(@ApiParam(value = "用户ID，不传则查询当前登录人的") @RequestParam(value = "userId", required = false) Long userId) {
+        return Result.success(baseRoleService.getByUserId(userId));
     }
 
     @PostMapping
     @ApiOperation(value = "新增", httpMethod = "POST", response = Result.class)
-    public Result insert(@RequestBody BaseRole baseRole) {
-        return baseRoleService.insert(baseRole);
+    public Result<Boolean> insert(@RequestBody BaseRole baseRole) {
+        return Result.success(baseRoleService.save(baseRole));
     }
 
     @PostMapping("rel")
     @ApiOperation(value = "设置角色", httpMethod = "POST", response = Result.class, notes = "为用户设置角色，会覆盖之前的角色")
-    public Result rel(@RequestBody BaseUserRoleDto baseUserRoleDto) {
-        return baseRoleService.rel(baseUserRoleDto);
+    public Result<Boolean> rel(@RequestBody BaseUserRoleDto baseUserRoleDto) {
+        return Result.success(baseRoleService.rel(baseUserRoleDto));
     }
 
     @PutMapping
     @ApiOperation(value = "更新", httpMethod = "PUT", response = Result.class)
-    public Result update(@RequestBody BaseRole baseRole) {
-        return baseRoleService.updateByPrimaryKeySelective(baseRole);
+    public Result<Boolean> update(@RequestBody BaseRole baseRole) {
+        return Result.success(baseRoleService.updateById(baseRole));
     }
 
     @DeleteMapping("/{roleId}")
     @ApiOperation(value = "根据主键删除", httpMethod = "DELETE", response = Result.class)
     @ApiImplicitParam(paramType = "path", name = "roleId", value = "角色ID", required = true)
-    public Result delete(@PathVariable Long roleId) {
-        return baseRoleService.deleteByPrimaryKey(roleId);
+    public Result<Boolean> delete(@PathVariable Long roleId) {
+        return Result.success(baseRoleService.deleteById(roleId));
     }
 }

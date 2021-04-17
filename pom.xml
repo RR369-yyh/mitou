@@ -6,7 +6,7 @@
     <artifactId>mitou</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mitou</name>
-    <description>米头脚手架</description>
+    <description>mitou基础开发框架</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -140,11 +140,18 @@
         <resources>
             <!-- 配置加载的文件 -->
             <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>application-${package.environment}.yml</include>
+                    <include>application.yml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
-                <filtering>true</filtering>
             </resource>
         </resources>
     </build>

@@ -2,6 +2,7 @@ package com.mitou.user.entity.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author rice
  * @since 2021-03-25
  */
+@Data
 @ApiModel(description = "登录")
 public class BaseUserLoginDto {
 
@@ -21,20 +23,4 @@ public class BaseUserLoginDto {
 
     @ApiModelProperty(value = "密码")
     private String userPwd;
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getUserPwd() {
-        return userPwd;
-    }
-
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
-    }
 }

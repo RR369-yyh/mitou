@@ -34,20 +34,19 @@ public class BaseMenuController {
     @Resource
     private IBaseMenuService baseMenuService;
 
-
     @GetMapping("/{menuId}")
     @ApiOperation(value = "查询", httpMethod = "GET", response = BaseMenu.class)
     @ApiImplicitParam(paramType = "path", name = "menuId", value = "菜单ID", required = true)
-    public Result<BaseMenu> selectByPrimaryKey(@PathVariable Long menuId) {
+    public Result<BaseMenu> getById(@PathVariable Long menuId) {
         return Result.success(baseMenuService.getById(menuId));
     }
 
     @GetMapping
     @ApiOperation(value = "分页查询", httpMethod = "GET", response = BaseMenu.class)
-    public Result<Page<BaseMenu>> select(@ModelAttribute BaseMenuQuery baseMenuQuery,
+    public Result<Page<BaseMenu>> page(@ModelAttribute BaseMenuQuery baseMenuQuery,
                                          @ApiParam(name = "pageNo", required = true, value = "当前页") @RequestParam("pageNo") Integer pageNo,
                                          @ApiParam(name = "pageSize", required = true, value = "每页记录数") @RequestParam("pageSize") Integer pageSize) {
-        return Result.success(baseMenuService.select(baseMenuQuery, pageNo, pageSize));
+        return Result.success(baseMenuService.page(baseMenuQuery, pageNo, pageSize));
     }
 
     @GetMapping("/has")

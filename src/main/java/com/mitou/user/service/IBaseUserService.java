@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseUser;
-import com.mitou.user.entity.dto.BaseUserDto;
 import com.mitou.user.entity.dto.BaseUserLoginDto;
+import com.mitou.user.entity.dto.BaseUserSaveDto;
+import com.mitou.user.entity.dto.BaseUserUpdatePwdDto;
 import com.mitou.user.entity.query.BaseUserQuery;
 import com.mitou.user.entity.vo.BaseUserLoginVo;
 import com.mitou.user.entity.vo.BaseUserVo;
@@ -22,15 +23,47 @@ import java.util.List;
  */
 public interface IBaseUserService extends IService<BaseUser> {
 
-    Result<BaseUserVo> selectByPrimaryKey(Long userId);
+    /**
+     * 查询用户信息
+     *
+     * @param userId
+     * @return
+     */
+    BaseUserVo getById(Long userId);
 
-    Result<Page<BaseUserVo>> select(BaseUserQuery baseUserQuery, Integer pageNo, Integer pageSize);
+    /**
+     * 分页查询方法
+     *
+     * @param baseUserQuery
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    Page<BaseUserVo> page(BaseUserQuery baseUserQuery, Integer pageNo, Integer pageSize);
 
-    Result insert(BaseUserDto baseUserDto) ;
+    /**
+     * 新增，注册用户
+     *
+     * @param saveDto
+     * @return
+     */
+    boolean insert(BaseUserSaveDto saveDto);
 
-    Result updateByPrimaryKeySelective(BaseUser baseUser);
+    /**
+     * 检查电话的合法性，是否重复
+     *
+     * @param phone
+     * @return true：合法；false：不合法
+     */
+    boolean checkPhoneLegal(String phone);
 
-    Result deleteByPrimaryKey(Long userId);
+    /**
+     * 删除数据，并清除掉与此用户的角色关联
+     *
+     * @param userId
+     * @return
+     */
+    boolean deleteById(Long userId);
 
     /**
      * 用户登录
@@ -38,19 +71,29 @@ public interface IBaseUserService extends IService<BaseUser> {
      * @param baseUserLoginDto
      * @return
      */
-    Result<BaseUserLoginVo> login(BaseUserLoginDto baseUserLoginDto) ;
+    Result<BaseUserLoginVo> login(BaseUserLoginDto baseUserLoginDto);
 
     /**
      * 用户退出登录
      *
      * @return
      */
-    Result logout();
+    boolean logout();
+
+    /**
+     * 更新用户密码
+     *
+     * @param updatePwdDto
+     * @return
+     */
+    Result<Boolean> updatePwd(BaseUserUpdatePwdDto updatePwdDto);
 
     /**
      * 查询单位下的用户id
+     *
      * @param orgId
      * @return
      */
-    List<BaseUser> selectByOrgId(Long orgId);
+    List<BaseUser> getByOrgId(Long orgId);
+
 }
