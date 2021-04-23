@@ -9,10 +9,7 @@ import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.service.SecurityScheme;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -57,7 +54,8 @@ public class Swagger2Config {
                 .securityContexts(securityContexts())
                 .apiInfo(
                         new ApiInfoBuilder()
-                                .version("1.0")
+                                .version(swagger2Properties.getVersion())
+                                .contact(new Contact("rice", "", "yuhua.ai@qq.com"))
                                 .title(swagger2Properties.getServerTitle())
                                 .description("<div style='font-size:14px;color:red;'>" + swagger2Properties.getServerTitle() + " RESTful APIs</div>")
                                 .build()
@@ -76,7 +74,8 @@ public class Swagger2Config {
     }
 
     /**
-     * 通过正则表达式，设置需要使用参数的接口（或者说，是去除掉不需要使用参数的接口）
+     * 通过正则表达式，设置需要使用参数的接口
+     * 此处是排除了请求中包含“auth”路径的参数校验；即：若请求路径中包含“auth”，则无须携带“Authorization”参数。
      *
      * @return
      */
@@ -84,6 +83,7 @@ public class Swagger2Config {
         return newArrayList(
                 SecurityContext.builder()
                         .securityReferences(defaultAuth())
+                        //标识哪些路径不需要认证（即携带defaultAuth();方法中配置的参数）
                         .forPaths(PathSelectors.regex("^((?!auth).)*$"))
                         .build()
         );
