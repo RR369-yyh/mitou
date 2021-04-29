@@ -1,6 +1,7 @@
 package com.mitou.user.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.mitou.common.auth.RoleAuth;
 import com.mitou.common.response.Result;
 import com.mitou.user.entity.BaseUser;
 import com.mitou.user.entity.dto.BaseUserLoginDto;
@@ -19,6 +20,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -57,19 +59,21 @@ public class BaseUserController {
 
     @GetMapping
     @ApiOperation(value = "分页查询", httpMethod = "GET", response = BaseUser.class)
+    //配置访问此方法的权限码。取的是菜单code
+    @RoleAuth("role_user_page")
     public Result<Page<BaseUserVo>> page(@ModelAttribute BaseUserQuery baseUserQuery,
                                          @ApiParam(name = "pageNo", required = true, value = "当前页") @RequestParam("pageNo") Integer pageNo,
                                          @ApiParam(name = "pageSize", required = true, value = "每页记录数") @RequestParam("pageSize") Integer pageSize) {
         return Result.success(baseUserService.page(baseUserQuery, pageNo, pageSize));
     }
 
-    @PostMapping
+    @PostMapping("/register")
     @ApiOperation(value = "注册", httpMethod = "POST", response = Result.class)
-    public Result<Boolean> insert(@RequestBody BaseUserSaveDto saveDto) {
-        return Result.success(baseUserService.insert(saveDto));
+    public Result<Boolean> register(@RequestBody BaseUserSaveDto saveDto) {
+        return Result.success(baseUserService.register(saveDto));
     }
 
-    @GetMapping("checkLegal")
+    @GetMapping("/checkLegal")
     @ApiOperation(value = "检查登录名是否合法", httpMethod = "GET", response = Result.class, notes = "true：合法；false：不合法")
     public Result<Boolean> checkPhoneLegal(
             @ApiParam(value = "phone", name = "电话") @RequestParam(value = "phone") String phone) {
@@ -91,10 +95,10 @@ public class BaseUserController {
         return baseUserService.updatePwd(updatePwdDto);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{userIds}")
     @ApiOperation(value = "根据主键删除", httpMethod = "DELETE", response = Result.class)
-    @ApiImplicitParam(paramType = "path", name = "userId", value = "用户ID", required = true)
-    public Result<Boolean> delete(@PathVariable Long userId) {
-        return Result.success(baseUserService.deleteById(userId));
+    @ApiImplicitParam(paramType = "path", name = "userIds", value = "用户IDs", required = true)
+    public Result<Boolean> delete(@PathVariable List<Long> userIds) {
+        return Result.success(baseUserService.deleteByIds(userIds));
     }
 }

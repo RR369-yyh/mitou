@@ -8,14 +8,33 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     name: defaultDataSource
-    url: jdbc:mysql://localhost:3306/mitou?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
-    username: root
-    password: 123456
+    url: jdbc:mysql://${mitou.datasource.url}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    username: ${mitou.datasource.username}
+    password: ${mitou.datasource.password}
   # 格式化返回的时间类型数据
   jackson:
     locale: zh
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    database: ${mitou.redis.database}
+    host: ${mitou.redis.host}
+    port: ${mitou.redis.port}
+    password: ${mitou.redis.password}
+    jedis:
+      pool:
+        max-active: 200
+        max-wait: -1
+        max-idle: 10
+        min-idle: 0
+    timeout: 2000
+    lettuce:
+      shutdown-timeout: 0
 
+# mp相关配置
+mybatis-plus:
+  configuration:
+    # 日志打印
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 

@@ -18,8 +18,8 @@ public class BaseUserLoginDto {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "电话")
-    private String phone;
+    @ApiModelProperty(value = "登录名")
+    private String loginName;
 
     @ApiModelProperty(value = "密码")
     private String userPwd;

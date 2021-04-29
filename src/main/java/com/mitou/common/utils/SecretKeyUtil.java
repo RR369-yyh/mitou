@@ -21,7 +21,7 @@ import java.security.spec.X509EncodedKeySpec;
 /**
  * RSA加解密工具类
  *
- * @author yyh
+ * @author rice
  * @since 2021-03-25
  */
 public class SecretKeyUtil {

@@ -55,9 +55,9 @@ public class Swagger2Config {
                 .apiInfo(
                         new ApiInfoBuilder()
                                 .version(swagger2Properties.getVersion())
-                                .contact(new Contact("rice", "", "yuhua.ai@qq.com"))
+                                .contact(new Contact("rice --->>> email:yuhua.ai@qq.com", "", "yuhua.ai@qq.com"))
                                 .title(swagger2Properties.getServerTitle())
-                                .description("<div style='font-size:14px;color:red;'>" + swagger2Properties.getServerTitle() + " RESTful APIs</div>")
+                                .description("<div style='font-size:14px;color:blue;'>" + swagger2Properties.getServerTitle() + " RESTful APIs</div>")
                                 .build()
                 );
     }

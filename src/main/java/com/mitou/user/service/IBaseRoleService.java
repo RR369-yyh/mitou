@@ -40,10 +40,10 @@ public interface IBaseRoleService extends IService<BaseRole> {
     /**
      * 删除数据，并清除掉与此角色的菜单关联和此角色的用户关联
      *
-     * @param roleId
+     * @param roleIds
      * @return
      */
-    boolean deleteById(Long roleId);
+    boolean deleteByIds(List<Long> roleIds);
 
     /**
      * 为用户设置角色，会覆盖之前的角色

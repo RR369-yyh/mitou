@@ -11,9 +11,11 @@
     <properties>
         <java.version>1.8</java.version>
         <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
-        <mybatis-plus.version>3.3.1</mybatis-plus.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <freemarker.version>2.3.31</freemarker.version>
+        <knife4j.version>3.0.2</knife4j.version>
         <ali-fastjson.version>1.2.47</ali-fastjson.version>
-        <jjwt.version>0.9.0</jjwt.version>
+        <lombok.version>1.18.12</lombok.version>
     </properties>
 
     <!-- 依赖的版本管理 -->
@@ -46,7 +48,6 @@
             <scope>test</scope>
         </dependency>
 
-
         <!-- mysql相关引用 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -68,6 +69,16 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>${mybatis-plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+        </dependency>
         <!-- fastjson相关引用 -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -78,20 +89,14 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.12</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <!-- jwt相关引用 -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>${jjwt.version}</version>
         </dependency>
         <!-- knife4j-swagger增强ui -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>3.0.2</version>
+            <version>${knife4j.version}</version>
         </dependency>
     </dependencies>
 

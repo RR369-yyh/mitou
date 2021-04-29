@@ -43,10 +43,10 @@ public interface IBaseMenuService extends IService<BaseMenu> {
     /**
      * 删除数据，并清除掉与此菜单的角色关联
      *
-     * @param menuId
+     * @param menuIds
      * @return
      */
-    boolean deleteById(Long menuId);
+    boolean deleteByIds(List<Long> menuIds);
 
     /**
      * 查询当前用户拥有权限的菜单列表

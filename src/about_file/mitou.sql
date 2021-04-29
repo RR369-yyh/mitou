@@ -70,14 +70,15 @@ DROP TABLE IF EXISTS `base_user`;
 CREATE TABLE `base_user` (
   `USER_ID` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `USER_NAME` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '姓名',
+  `LOGIN_NAME` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '登录名',
   `USER_PWD` varchar(100) DEFAULT '' COMMENT '密码',
-  `PHONE` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '电话(作为登录名)',
+  `PHONE` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '电话',
   `EMAIL` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '邮箱',
-  `GENDER` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '性别(0:男 1:女)',
+  `GENDER` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '性别',
   `USER_LOGO` varchar(100) DEFAULT '' COMMENT '用户头像',
   `BIRTHDAY` datetime DEFAULT NULL COMMENT '生日',
-  `ORG_ID` bigint DEFAULT NULL COMMENT '单位(组织id)',
-  `ORG_NAME` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '单位(组织)',
+  `ORG_ID` bigint DEFAULT NULL COMMENT '组织id',
+  `ORG_NAME` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '组织',
   `POSITION` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '职位',
   `DEPT` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '部门',
   `USER_TYPE` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '用户类型',
@@ -85,8 +86,8 @@ CREATE TABLE `base_user` (
   `CREATE_TIME` datetime DEFAULT NULL COMMENT '创建时间',
   `DEL_FLAG` tinyint NOT NULL DEFAULT '1' COMMENT '删除状态( 0:已删除 1:正常)',
   PRIMARY KEY (`USER_ID`),
-  UNIQUE KEY `PHONE` (`PHONE`) COMMENT '登录名'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统用户';
+  UNIQUE KEY `LOGIN_NAME` (`LOGIN_NAME`) USING BTREE COMMENT '登录名'
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统用户';
 
 -- ----------------------------
 -- Table structure for base_user_role

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mitou.common.constants.BaseConstants;
-import com.mitou.common.response.Result;
 import com.mitou.common.utils.BaseUserUtil;
 import com.mitou.common.utils.TreeUtils;
 import com.mitou.user.entity.BaseMenu;
@@ -82,26 +81,19 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenu> i
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean deleteById(Long menuId) {
+    public boolean deleteByIds(List<Long> menuIds) {
         //清除掉与此菜单的角色关联
-        baseRoleMenuService.remove(new LambdaQueryWrapper<BaseRoleMenu>().eq(BaseRoleMenu::getMenuId, menuId));
-        return super.removeById(menuId);
+        baseRoleMenuService.remove(new LambdaQueryWrapper<BaseRoleMenu>().in(BaseRoleMenu::getMenuId, menuIds));
+        return super.removeByIds(menuIds);
     }
 
     @Override
     public List<BaseMenuVo> selectHas(BaseMenuHasQuery baseMenuHasQuery) {
-        Long parentId = BaseConstants.DEFAULT_PARENT_ID;
-        Integer menuId = BaseConstants.BASE_MENU_1;
-        //默认查询顶级的、菜单类型的清单
-        if (null != baseMenuHasQuery) {
-            if (null != baseMenuHasQuery.getParentMenuId()) {
-                parentId = baseMenuHasQuery.getParentMenuId();
-            }
-            if (null != baseMenuHasQuery.getMenuType()) {
-                menuId = baseMenuHasQuery.getMenuType();
-            }
-        }
-        List<BaseMenuVo> baseMenuVoList = baseMenuMapper.selectHas(baseUserUtil.getUserId(), menuId, parentId);
+        List<BaseMenuVo> baseMenuVoList = baseMenuMapper.selectHas(
+                baseUserUtil.getUserId(),
+                baseMenuHasQuery.getMenuType(),
+                baseMenuHasQuery.getParentMenuId()
+        );
         if (null == baseMenuVoList) {
             baseMenuVoList = new ArrayList<>();
         }

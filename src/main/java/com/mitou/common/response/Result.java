@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
+
 /**
  * 返回结果统一封装
  *
@@ -12,15 +14,15 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Data
 @Slf4j
-public class Result<T> implements GlobalResult {
+public class Result<T> implements Serializable {
 
-    private static final long serialVersionUID = -8806496761426307839L;
+    private static final long serialVersionUID = 3485147337688330883L;
 
     @ApiModelProperty(value = "状态码", example = "1")
     private Integer code;
     @ApiModelProperty(value = "描述")
     private String msg;
-    @ApiModelProperty(value = "对象")
+    @ApiModelProperty(value = "数据")
     private T data;
 
     public static <T> Result<T> success() {
@@ -39,7 +41,6 @@ public class Result<T> implements GlobalResult {
     public static <T> Result<T> failure(ResultCode resultCode) {
         Result<T> result = new Result<>();
         result.setResultCode(resultCode);
-        log.error("系统内部错误码：" + result.getCode() + "；错误详细描述：" + result.getMsg());
         return result;
     }
 
@@ -47,20 +48,11 @@ public class Result<T> implements GlobalResult {
         Result<T> result = new Result<>();
         result.setResultCode(resultCode);
         result.setData(data);
-        log.error("系统内部错误码：" + result.getCode() + "；错误详细描述：" + data.toString());
-        return result;
-    }
-
-    public static <T> Result<T> failure(String message) {
-        Result<T> result = new Result<>();
-        result.setCode(ResultCode.SYSTEM_INNER_ERROR.code());
-        result.setMsg(message);
-        log.error("系统内部错误码：" + result.getCode() + "；错误详细描述：" + result.getMsg());
         return result;
     }
 
     private void setResultCode(ResultCode code) {
         this.code = code.code();
-        this.msg = code.message();
+        this.msg = code.msg();
     }
 }

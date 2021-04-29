@@ -44,16 +44,15 @@ public class BaseMenuController {
     @GetMapping
     @ApiOperation(value = "分页查询", httpMethod = "GET", response = BaseMenu.class)
     public Result<Page<BaseMenu>> page(@ModelAttribute BaseMenuQuery baseMenuQuery,
-                                         @ApiParam(name = "pageNo", required = true, value = "当前页") @RequestParam("pageNo") Integer pageNo,
-                                         @ApiParam(name = "pageSize", required = true, value = "每页记录数") @RequestParam("pageSize") Integer pageSize) {
+                                       @ApiParam(name = "pageNo", required = true, value = "当前页") @RequestParam("pageNo") Integer pageNo,
+                                       @ApiParam(name = "pageSize", required = true, value = "每页记录数") @RequestParam("pageSize") Integer pageSize) {
         return Result.success(baseMenuService.page(baseMenuQuery, pageNo, pageSize));
     }
 
     @GetMapping("/has")
-//    @RoleAuth("add")
     @ApiOperation(value = "查询当前用户拥有权限的菜单列表", httpMethod = "GET", response = BaseMenuVo.class)
     public Result<List<BaseMenuVo>> selectHas(
-            @ApiParam(value = "非必填，默认查询顶级的、菜单类型的菜单") @RequestBody(required = false) BaseMenuHasQuery baseMenuHasQuery) {
+            @ApiParam(value = "查询顶级parentMenuId传0") @ModelAttribute BaseMenuHasQuery baseMenuHasQuery) {
         return Result.success(baseMenuService.selectHas(baseMenuHasQuery));
     }
 
@@ -81,10 +80,10 @@ public class BaseMenuController {
         return Result.success(baseMenuService.updateById(baseMenu));
     }
 
-    @DeleteMapping("/{menuId}")
+    @DeleteMapping("/{menuIds}")
     @ApiOperation(value = "根据主键删除", httpMethod = "DELETE", response = Result.class)
-    @ApiImplicitParam(paramType = "path", name = "menuId", value = "菜单ID", required = true)
-    public Result<Boolean> delete(@PathVariable Long menuId) {
-        return Result.success(baseMenuService.deleteById(menuId));
+    @ApiImplicitParam(paramType = "path", name = "menuIds", value = "菜单IDs", required = true)
+    public Result<Boolean> delete(@PathVariable List<Long> menuIds) {
+        return Result.success(baseMenuService.deleteByIds(menuIds));
     }
 }

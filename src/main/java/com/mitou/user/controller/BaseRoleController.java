@@ -42,8 +42,8 @@ public class BaseRoleController {
     @GetMapping
     @ApiOperation(value = "分页查询", httpMethod = "GET", response = BaseRole.class)
     public Result<Page<BaseRole>> page(@ModelAttribute BaseRoleQuery baseRoleQuery,
-                                         @ApiParam(name = "pageNo", required = true, value = "当前页") @RequestParam("pageNo") Integer pageNo,
-                                         @ApiParam(name = "pageSize", required = true, value = "每页记录数") @RequestParam("pageSize") Integer pageSize) {
+                                       @ApiParam(name = "pageNo", required = true, value = "当前页") @RequestParam("pageNo") Integer pageNo,
+                                       @ApiParam(name = "pageSize", required = true, value = "每页记录数") @RequestParam("pageSize") Integer pageSize) {
         return Result.success(baseRoleService.page(baseRoleQuery, pageNo, pageSize));
     }
 
@@ -71,10 +71,10 @@ public class BaseRoleController {
         return Result.success(baseRoleService.updateById(baseRole));
     }
 
-    @DeleteMapping("/{roleId}")
+    @DeleteMapping("/{roleIds}")
     @ApiOperation(value = "根据主键删除", httpMethod = "DELETE", response = Result.class)
-    @ApiImplicitParam(paramType = "path", name = "roleId", value = "角色ID", required = true)
-    public Result<Boolean> delete(@PathVariable Long roleId) {
-        return Result.success(baseRoleService.deleteById(roleId));
+    @ApiImplicitParam(paramType = "path", name = "roleIds", value = "角色IDs", required = true)
+    public Result<Boolean> delete(@PathVariable List<Long> roleIds) {
+        return Result.success(baseRoleService.deleteByIds(roleIds));
     }
 }

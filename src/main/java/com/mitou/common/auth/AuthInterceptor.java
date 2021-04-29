@@ -1,10 +1,15 @@
 package com.mitou.common.auth;
 
+import com.alibaba.fastjson.JSON;
 import com.mitou.common.response.Result;
+import com.mitou.common.response.ResultCode;
+import com.mitou.common.utils.BaseUserUtil;
+import com.mitou.user.entity.query.BaseMenuHasQuery;
 import com.mitou.user.entity.vo.BaseMenuVo;
 import com.mitou.user.service.IBaseMenuService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -35,17 +40,22 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+        //检查token有效性
+        BaseUserUtil baseUserUtil = factory.getBean(BaseUserUtil.class);
+        baseUserUtil.checkTokenLegal();
         //bean有未注入的风险
         if (null == baseMenuService) {
-            BeanFactory factory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
             baseMenuService = factory.getBean(IBaseMenuService.class);
         }
         //验证权限
         if (this.hasPermission(handler)) {
             return true;
         }
-        //如果没有权限，则抛403异常（或自己定义状态码）
-        response.sendError(HttpStatus.FORBIDDEN.value());
+        //如果没有权限，则返回403异常，数据可返回已经定义好的状态码。
+        response.setStatus(HttpStatus.FORBIDDEN.value());
+        response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
+        response.getOutputStream().write(JSON.toJSONBytes(Result.failure(ResultCode.PERMISSION_NO_ACCESS)));
         return false;
     }
 
@@ -71,7 +81,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             //如果标记了注解，则校验权限
             if (StringUtils.isNotBlank(roleAuth.value())) {
                 //获取该用户的权限信息进行鉴权
-                List<BaseMenuVo> menuList = baseMenuService.selectHas(null);
+                List<BaseMenuVo> menuList = baseMenuService.selectHas(new BaseMenuHasQuery());
                 //如果权限清单为空，则直接返回
                 if (CollectionUtils.isEmpty(menuList)) {
                     return false;

@@ -21,6 +21,12 @@ public class BaseUserUpdateDto {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 登录名
+     */
+    @ApiModelProperty(value = "登录名", position = 0)
+    private String loginName;
+
+    /**
      * 姓名
      */
     @ApiModelProperty(value = "姓名", position = 1)
@@ -57,15 +63,15 @@ public class BaseUserUpdateDto {
     private Date birthday;
 
     /**
-     * 单位(组织id)
+     * 组织id
      */
-    @ApiModelProperty(value = "单位(组织id)", position = 7)
+    @ApiModelProperty(value = "组织id", position = 7)
     private Long orgId;
 
     /**
-     * 单位(组织)
+     * 组织
      */
-    @ApiModelProperty(value = "单位(组织)", position = 8)
+    @ApiModelProperty(value = "组织", position = 8)
     private String orgName;
 
     /**

@@ -47,7 +47,7 @@ public interface IBaseUserService extends IService<BaseUser> {
      * @param saveDto
      * @return
      */
-    boolean insert(BaseUserSaveDto saveDto);
+    boolean register(BaseUserSaveDto saveDto);
 
     /**
      * 检查电话的合法性，是否重复
@@ -60,10 +60,10 @@ public interface IBaseUserService extends IService<BaseUser> {
     /**
      * 删除数据，并清除掉与此用户的角色关联
      *
-     * @param userId
+     * @param userIds
      * @return
      */
-    boolean deleteById(Long userId);
+    boolean deleteByIds(List<Long> userIds);
 
     /**
      * 用户登录

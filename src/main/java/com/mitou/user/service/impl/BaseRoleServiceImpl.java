@@ -78,12 +78,12 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRole> i
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean deleteById(Long roleId) {
+    public boolean deleteByIds(List<Long> roleIds) {
         //清除掉与此角色的菜单关联
-        baseRoleMenuService.remove(new LambdaQueryWrapper<BaseRoleMenu>().eq(BaseRoleMenu::getRoleId, roleId));
+        baseRoleMenuService.remove(new LambdaQueryWrapper<BaseRoleMenu>().in(BaseRoleMenu::getRoleId, roleIds));
         //清除掉与此角色的用户关联
-        baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().eq(BaseUserRole::getRoleId, roleId));
-        return super.removeById(roleId);
+        baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().in(BaseUserRole::getRoleId, roleIds));
+        return super.removeByIds(roleIds);
     }
 
     @Transactional(rollbackFor = Exception.class)

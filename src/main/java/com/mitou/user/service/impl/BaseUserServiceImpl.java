@@ -97,7 +97,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUser> i
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean insert(BaseUserSaveDto saveDto) {
+    public boolean register(BaseUserSaveDto saveDto) {
         BaseUser baseUser = new BaseUser();
         BeanUtils.copyProperties(saveDto, baseUser);
         return this.register(baseUser, false);
@@ -118,19 +118,22 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUser> i
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean deleteById(Long userId) {
+    public boolean deleteByIds(List<Long> userIds) {
         //清除掉与此用户的角色关联
-        baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().eq(BaseUserRole::getUserId, userId));
-        return super.removeById(userId);
+        baseUserRoleService.remove(new LambdaQueryWrapper<BaseUserRole>().in(BaseUserRole::getUserId, userIds));
+        return super.removeByIds(userIds);
     }
 
     @Override
     public Result<BaseUserLoginVo> login(BaseUserLoginDto baseUserLoginDto) {
         LambdaQueryWrapper<BaseUser> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(BaseUser::getPhone, baseUserLoginDto.getPhone());
+        lqw.eq(BaseUser::getLoginName, baseUserLoginDto.getLoginName());
         BaseUser one = super.getOne(lqw);
-        if (null == one || !SecretKeyUtil.priDecrypt(one.getUserPwd()).equals(baseUserLoginDto.getUserPwd())) {
+        if (null == one) {
             return Result.failure(ResultCode.USER_LOGIN_ERROR);
+        }
+        if (!SecretKeyUtil.priDecrypt(one.getUserPwd()).equals(baseUserLoginDto.getUserPwd())) {
+            return Result.failure(ResultCode.USER_PWD_ERROR);
         }
         String token = baseUserUtil.generateToken(one);
         //返回token与用户信息
@@ -150,7 +153,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, BaseUser> i
         Long userId = null == updatePwdDto.getUserId() ? baseUserUtil.getUserId() : updatePwdDto.getUserId();
         BaseUser byId = super.getById(userId);
         if (null == byId) {
-            return Result.failure(ResultCode.USER_NOT_EXIST);
+            return Result.failure(ResultCode.USER_LOGIN_ERROR);
         }
         String userPwd = SecretKeyUtil.priDecrypt(byId.getUserPwd());
         if (!userPwd.equals(updatePwdDto.getOldUserPwd())) {

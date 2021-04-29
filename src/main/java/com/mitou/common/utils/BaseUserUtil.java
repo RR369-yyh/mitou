@@ -1,7 +1,7 @@
 package com.mitou.common.utils;
 
-import com.mitou.common.exception.UserNotLoginException;
 import com.mitou.common.constants.BaseConstants;
+import com.mitou.common.exception.business.UserNotLoginException;
 import com.mitou.user.entity.BaseUser;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
@@ -34,9 +34,16 @@ public class BaseUserUtil {
             String token = RequestContextUtil.getRequest().getHeader(BaseConstants.TOKEN_MAME);
             return Long.parseLong(redisCacheUtil.getStr(token));
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new UserNotLoginException("用户未登录，请检查token信息！");
+            throw new UserNotLoginException();
         }
+    }
+
+    /**
+     * 检查token有效性
+     * 无效则抛出异常 {@link UserNotLoginException}
+     */
+    public void checkTokenLegal() {
+        this.getUserId();
     }
 
     /**
@@ -49,13 +56,13 @@ public class BaseUserUtil {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             //定义加密值
-            String salt = one.getUserId() + one.getUserPwd();
+            String salt = one.getUserId() + one.getUserPwd() + new Random().nextInt(100);
             //加密生成token
             String token = Base64Utils.encodeToString(
                     md5.digest(salt.getBytes(StandardCharsets.UTF_8))
-            ) + new Random().nextInt(100);
-            //把token放入redis，保存30分钟
-            redisCacheUtil.setStr(token, one.getUserId().toString(), 30, TimeUnit.MINUTES);
+            );
+            //把token放入redis，保存2个小时
+            redisCacheUtil.setStr(token, one.getUserId().toString(), 2, TimeUnit.HOURS);
             return token;
         } catch (Exception e) {
             e.printStackTrace();
